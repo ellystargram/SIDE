@@ -1,0 +1,36 @@
+{
+  "exit": [
+    "shutdown",
+    "close",
+    "나가기",
+    "종료",
+    "끝내기",
+    "종료하기"
+  ],
+  "save": [
+    "저장",
+    "쓰기"
+  ],
+  "save_as": [
+    "save-as",
+    "다른이름으로 저장"
+  ],
+  "custom": [
+    {
+      "command": "저장하고 종료",
+      "action": "save and exit"
+    },
+    {
+      "command": "다른이름으로 저장하고 종료",
+      "action": "save_as and exit"
+    },
+    {
+      "command": "저장 그리고 종료",
+      "action": "save and exit"
+    },
+    {
+      "command": "exit without save",
+      "action": "exit"
+    }
+  ]
+}

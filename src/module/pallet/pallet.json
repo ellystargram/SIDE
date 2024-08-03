@@ -1,3 +1,47 @@
 {
-  "default": "#646464ff"
+  "default": "#323232ff",
+  "error": "#ff0000ff",
+  "ide": {
+    "background": "#15181e",
+    "foreground": "#ffffffff"
+  },
+  "commandBar": {
+    "prompt": {
+        "background": "#663366",
+        "foreground": "#ffffff"
+    },
+    "button": {
+      "background": "#845B84",
+      "foreground": "#5b845b"
+    },
+    "list": {
+      "background": "#363e51",
+      "foreground": "#A8A49A"
+    }
+  },
+  "handleBar": {
+    "background": "#0a0c0f",
+    "foreground": "#ffffffff",
+    "title": {
+        "background": "#0a0c0f",
+        "foreground": "#ffffff"
+    },
+    "exitButton": {
+        "background": "#ff0000",
+        "foreground": "#ffffffff"
+    }
+  },
+  "codeSpace": {
+    "background": "#15181e",
+    "foreground": "#ffffffff",
+    "cursor": "#ffffffff",
+    "codeEditor": {
+      "background": "#15181e",
+      "foreground": "#ffffffff"
+    },
+    "lineNumber": {
+      "background": "#0a0c0f",
+      "foreground": "#A8A49A"
+    }
+  }
 }
