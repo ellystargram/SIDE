@@ -4,7 +4,6 @@ import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
 import java.awt.Font
 import java.awt.GraphicsEnvironment
-import java.io.File
 
 class Settings {
     private val settingsJsonAddress = javaClass.getResource("settings.json")!!.readText()
@@ -106,14 +105,14 @@ class SettingCategory {
     }
 
     fun getSettingOfFont(settingAddress: String): Font {
-        val fontNameKey: String = "font"
-        val fontSizeKey: String = "fontSize"
+        val fontNameKey = "font"
+        val fontSizeKey = "fontSize"
         if (getSettingOfString("$settingAddress.$fontNameKey").startsWith("/")) {
             //custom font
             val ttfFile = javaClass.getResource(getSettingOfString("$settingAddress.$fontNameKey"))!!.openStream()
             val deriveFont = Font.createFont(Font.TRUETYPE_FONT, ttfFile)
                 .deriveFont(getSettingOfInt("$settingAddress.$fontSizeKey").toFloat())
-            val ge:GraphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment()
+            val ge: GraphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment()
             ge.registerFont(deriveFont)
             return deriveFont
         }
@@ -123,5 +122,4 @@ class SettingCategory {
             getSettingOfInt("$settingAddress.$fontSizeKey")
         )
     }
-
 }

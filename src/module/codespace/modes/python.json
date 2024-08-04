@@ -1,0 +1,39 @@
+{
+  "syntax": [
+    {
+      "name": "comment",
+      "priority": 0,
+      "regex": "^#.*$",
+      "pallet": "comment"
+    },
+    {
+      "name": "variable",
+      "regex": "^\t*([a-zA-Z_][a-zA-Z0-9_]*)(, *([a-zA-Z_][a-zA-Z0-9_]*))*",
+      "pallet": "variable"
+    },
+    {
+      "name": "constance",
+      "priority": 2,
+      "regex": "\\d",
+      "pallet": "constance"
+    },
+    {
+      "name": "string",
+      "priority": 1,
+      "regex": "(\".*\"|'.*')",
+      "pallet": "string"
+    }
+  ],
+  "keyword": [
+    {
+      "name": "import",
+      "regex":"^\t*import",
+      "pallet": "keyword"
+    },
+    {
+      "name": "def",
+      "regex": "^\t*def",
+      "pallet": "keyword"
+    }
+  ]
+}

@@ -47,7 +47,7 @@
     }
   },
   "codeSpace": {
-    "type": "python",
+    "mode": "python",
     "lineHeight": 15,
     "font": "/resources/fonts/JetBrainsMono.ttf",
     "fontSize": 20,

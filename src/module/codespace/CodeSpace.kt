@@ -2,6 +2,8 @@ package module.codespace
 
 import module.pallet.Pallet
 import module.settings.Settings
+import org.json.simple.JSONObject
+import org.json.simple.parser.JSONParser
 import java.awt.BorderLayout
 import javax.swing.JPanel
 import javax.swing.JScrollPane
@@ -11,13 +13,38 @@ import javax.swing.event.DocumentEvent
 import javax.swing.event.DocumentListener
 import javax.swing.text.StyledDocument
 
-class CodeSpace(val settings: Settings, val pallet: Pallet) : JPanel() {
-    private var codeType = settings.getSettingOfString("codeSpace.type")
+class CodeSpace(private val settings: Settings, private val pallet: Pallet) : JPanel() {
+    private var codeMode = settings.getSettingOfString("codeSpace.mode")
     private val codeEditor: JTextPane = JTextPane()
     private val codeArea: StyledDocument = codeEditor.styledDocument
     private val codeHorizontalScrollPane: JScrollPane = JScrollPane(codeEditor)
     private val codeVerticalScrollPane: JScrollPane = JScrollPane(codeHorizontalScrollPane)
     private val lineNumberDisplay = LineNumberDisplay(codeEditor)
+    private val codeSyntaxChecker = CodeSyntaxChecker(settings, pallet)
+    val documentListener = object : DocumentListener {
+        override fun insertUpdate(e: DocumentEvent) {
+            updateLineNumber()
+            codeSyntaxChecker.highlightSyntax(codeArea, this)
+        }
+
+        override fun removeUpdate(e: DocumentEvent) {
+            updateLineNumber()
+            codeSyntaxChecker.highlightSyntax(codeArea, this)
+        }
+
+        override fun changedUpdate(e: DocumentEvent) {
+            updateLineNumber()
+            codeSyntaxChecker.highlightSyntax(codeArea, this)
+        }
+
+        private fun updateLineNumber() {
+            lineNumberDisplay.updateLineNumbers()
+            try {
+                lineNumberDisplay.caretPosition = codeEditor.caretPosition
+            } catch (_: Exception) {
+            }
+        }
+    }
 
     init {
         layout = BorderLayout()
@@ -32,33 +59,11 @@ class CodeSpace(val settings: Settings, val pallet: Pallet) : JPanel() {
         setEngine()
         setPallet()
         setMouseWheelListener()
+        codeModeChange(codeMode)
     }
 
     private fun setEngine() {
-        codeArea.addDocumentListener(object : DocumentListener {
-            override fun insertUpdate(e: DocumentEvent?) {
-                updateLineNumber()
-            }
-
-            override fun removeUpdate(e: DocumentEvent?) {
-                updateLineNumber()
-            }
-
-            override fun changedUpdate(e: DocumentEvent?) {
-                updateLineNumber()
-            }
-
-            private fun updateLineNumber() {
-                lineNumberDisplay.updateLineNumbers()
-                // match the scroll of the line number display with the code editor
-                try {
-                    lineNumberDisplay.caretPosition = codeEditor.caretPosition
-                } catch (_:Exception) {
-                    // do nothing
-                }
-            }
-
-        })
+        codeArea.addDocumentListener(documentListener)
     }
 
     private fun setPallet() {
@@ -76,5 +81,12 @@ class CodeSpace(val settings: Settings, val pallet: Pallet) : JPanel() {
             val scrollAmount = it.unitsToScroll * mouseWheelSensitive
             codeVerticalScrollPane.verticalScrollBar.value += scrollAmount.toInt()
         }
+    }
+
+    private fun codeModeChange(codeMode: String) {
+        // change the code mode
+        val codeModeJsonLines = javaClass.getResource("modes/$codeMode.json")?.readText() ?: return
+        val codeModeJsonObject = JSONParser().parse(codeModeJsonLines) as JSONObject
+        codeSyntaxChecker.loadCodeSyntaxes(codeModeJsonObject)
     }
 }

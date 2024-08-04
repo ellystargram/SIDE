@@ -7,8 +7,8 @@
   },
   "commandBar": {
     "prompt": {
-        "background": "#663366",
-        "foreground": "#ffffff"
+      "background": "#663366",
+      "foreground": "#ffffff"
     },
     "button": {
       "background": "#845B84",
@@ -23,12 +23,12 @@
     "background": "#0a0c0f",
     "foreground": "#ffffffff",
     "title": {
-        "background": "#0a0c0f",
-        "foreground": "#ffffff"
+      "background": "#0a0c0f",
+      "foreground": "#ffffff"
     },
     "exitButton": {
-        "background": "#ff0000",
-        "foreground": "#ffffffff"
+      "background": "#ff0000",
+      "foreground": "#ffffffff"
     }
   },
   "codeSpace": {
@@ -42,6 +42,13 @@
     "lineNumber": {
       "background": "#0a0c0f",
       "foreground": "#A8A49A"
+    },
+    "syntax": {
+      "keyword": "#ff6ec7",
+      "variable": "#50bcdf",
+      "comment": "#808080",
+      "constance": "#ff8c00",
+      "string": "#5ce65c"
     }
   }
 }
