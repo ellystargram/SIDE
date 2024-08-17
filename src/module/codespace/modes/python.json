@@ -161,7 +161,7 @@
     },
     {
       "name": "None",
-      "regex": " None ",
+      "regex": " ?None",
       "pallet": "keyword"
     },
     {
@@ -177,6 +177,26 @@
     {
       "name": "with",
       "regex": " with ",
+      "pallet": "keyword"
+    },
+    {
+      "name": "try",
+      "regex": "^[\t ]*try",
+      "pallet": "keyword"
+    },
+    {
+      "name": "except",
+      "regex": "^[\t ]*except",
+      "pallet": "keyword"
+    },
+    {
+      "name": "finally",
+      "regex": "^[\t ]*finally",
+      "pallet": "keyword"
+    },
+    {
+      "name": "raise",
+      "regex": "^[\t ]*raise",
       "pallet": "keyword"
     }
   ]

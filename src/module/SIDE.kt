@@ -10,10 +10,11 @@ import javax.swing.JFrame
 class SIDE : JFrame() {
     private val settings: Settings = Settings()
     private val pallet = Pallet(settings)
-    val handleBar = HandleBar(settings, pallet)
+    val handleBar = HandleBar(settings, pallet, this)
     val codeSpace = CodeSpace(settings, pallet)
     var projectName: String? = null
     private val commandBarFiled = CommandBar(settings, pallet, this)
+    var codeRunningThread: Thread? = null
 
     init {
         title = settings.getSettingOfString("version")

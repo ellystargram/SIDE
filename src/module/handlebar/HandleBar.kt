@@ -1,5 +1,6 @@
 package module.handlebar
 
+import module.SIDE
 import module.pallet.Pallet
 import module.settings.Settings
 import java.awt.BorderLayout
@@ -14,10 +15,11 @@ import javax.swing.JLabel
 import javax.swing.JPanel
 import kotlin.system.exitProcess
 
-class HandleBar(private val settings: Settings, private val pallet: Pallet) : JPanel() {
+class HandleBar(private val settings: Settings, private val pallet: Pallet, val side: SIDE) : JPanel() {
     private var initialClick: Point? = null
     val title: JLabel = JLabel(settings.getSettingOfString("handleBar.title.default"))
     private val exitButton: JButton = JButton(settings.getSettingOfString("handleBar.exitButton.text"))
+    private val runButton: JButton = JButton(settings.getSettingOfString("handleBar.runButton.text"))
 
     init {
         layout = BorderLayout()
@@ -31,6 +33,23 @@ class HandleBar(private val settings: Settings, private val pallet: Pallet) : JP
         exitButton.addActionListener {
             exitProcess(0)
         }
+        add(runButton, BorderLayout.EAST)
+        runButton.font = Font(settings.getSettingOfString("handleBar.runButton.font"), Font.BOLD, settings.getSettingOfInt("handleBar.runButton.fontSize"))
+        runButton.preferredSize = java.awt.Dimension(settings.getSettingOfInt("handleBar.runButton.width"), settings.getSettingOfInt("handleBar.runButton.height"))
+        runButton.addActionListener {
+            if(side.codeRunningThread != null){
+                side.codeRunningThread?.interrupt()
+                side.codeRunningThread = null
+            }
+            // launch python script
+            val fileName = side.projectName ?: return@addActionListener
+            val extender = fileName.split(".").last()//later
+            val processBuilder = ProcessBuilder("python3", fileName)
+            val process = processBuilder.start()
+            val reader = process.inputStream.bufferedReader()
+            val output = reader.readText()
+            println(output)
+        }
         setPallet()
     }
 
@@ -41,29 +60,32 @@ class HandleBar(private val settings: Settings, private val pallet: Pallet) : JP
         title.foreground = pallet.getPallet("handleBar.title.foreground")
         exitButton.background = pallet.getPallet("handleBar.exitButton.background")
         exitButton.foreground = pallet.getPallet("handleBar.exitButton.foreground")
+        runButton.background = pallet.getPallet("handleBar.runButton.background")
+        runButton.foreground = pallet.getPallet("handleBar.runButton.foreground")
     }
 
     fun addMovingListener(target: JFrame){
-        addMouseListener(object : MouseAdapter() {
-            override fun mousePressed(e: MouseEvent) {
-                super.mousePressed(e)
-                initialClick = e.point
-            }
-
-        })
-        addMouseMotionListener(object : MouseMotionAdapter() {
-            override fun mouseDragged(e: MouseEvent) {
-                super.mouseDragged(e)
-                initialClick?.let {
-                    val current = e.point
-                    val jf = target.location
-                    val xMoved = current.x - it.x
-                    val yMoved = current.y - it.y
-                    val x = jf.x + xMoved
-                    val y = jf.y + yMoved
-                    target.location = Point(x, y)
-                }
-            }
-        })
+        return
+//        addMouseListener(object : MouseAdapter() {
+//            override fun mousePressed(e: MouseEvent) {
+//                super.mousePressed(e)
+//                initialClick = e.point
+//            }
+//
+//        })
+//        addMouseMotionListener(object : MouseMotionAdapter() {
+//            override fun mouseDragged(e: MouseEvent) {
+//                super.mouseDragged(e)
+//                initialClick?.let {
+//                    val current = e.point
+//                    val jf = target.location
+//                    val xMoved = current.x - it.x
+//                    val yMoved = current.y - it.y
+//                    val x = jf.x + xMoved
+//                    val y = jf.y + yMoved
+//                    target.location = Point(x, y)
+//                }
+//            }
+//        })
     }
 }

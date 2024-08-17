@@ -29,6 +29,10 @@
     "exitButton": {
       "background": "#ff0000",
       "foreground": "#ffffffff"
+    },
+    "runButton": {
+      "background": "#00ff00",
+      "foreground": "#ffffffff"
     }
   },
   "codeSpace": {
