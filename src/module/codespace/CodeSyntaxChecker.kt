@@ -17,6 +17,7 @@ class CodeSyntaxChecker(val settings: Settings, private val pallet: Pallet) {
     fun loadCodeSyntaxes(codeJsonObject: JSONObject) {
         settings.getSettingOfInt("codeSpace.codeEditor.fontSize")
 
+        codeSyntaxes.clear()
         val codeSyntaxesArray = codeJsonObject["syntax"] as JSONArray
 
         // load code syntaxes from json
@@ -52,7 +53,7 @@ class CodeSyntaxChecker(val settings: Settings, private val pallet: Pallet) {
             if (codeSyntax.priority != null) {
                 codeSyntax.priority = codeSyntaxes.size - priorityCounter + 1 + addedSyntaxWithPriority
                 addedSyntaxWithPriority++
-            }else{
+            } else {
                 codeSyntax.priority = addedSyntaxWithoutPriority
                 addedSyntaxWithoutPriority++
             }
@@ -61,7 +62,7 @@ class CodeSyntaxChecker(val settings: Settings, private val pallet: Pallet) {
 
         val codeKeywordArray = codeJsonObject["keyword"] as JSONArray
         var codeKeywordCounter = 0
-        for (codeKeywordObject in codeKeywordArray){
+        for (codeKeywordObject in codeKeywordArray) {
             val codeKeyword = codeKeywordObject as JSONObject
             val nameKey = "name"
             val regexKey = "regex"
@@ -73,17 +74,16 @@ class CodeSyntaxChecker(val settings: Settings, private val pallet: Pallet) {
             val regex = codeKeyword[regexKey] as String
 
             val codeSyntax = CodeSyntax(this.pallet, name, priority, regex, palletName)
-            this.codeSyntaxes[codeKeywordCounter+addedSyntaxWithoutPriority+addedSyntaxWithPriority+1] = codeSyntax
+            this.codeSyntaxes[codeKeywordCounter + addedSyntaxWithoutPriority + addedSyntaxWithPriority + 1] =
+                codeSyntax
             codeKeywordCounter++
         }
-
 
     }
 
     fun highlightSyntax(doc: StyledDocument, documentListener: DocumentListener) {
         val text = doc.getText(0, doc.length)
         val defaultStyle = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE)
-
 
 
         val styles = codeSyntaxes.values.associate { syntax ->
@@ -110,19 +110,25 @@ class CodeSyntaxChecker(val settings: Settings, private val pallet: Pallet) {
 //            }
             val lines = text.split("\n")
             var startOffset = 0
-            for (line in lines){
-                codeSyntaxes.values.forEach {syntax ->
-                    val matcher = syntax.regex.toPattern().matcher(line)
-                    while (matcher.find()){
-                        doc.setCharacterAttributes(
-                            startOffset + matcher.start(),
-                            matcher.end() - matcher.start(),
-                            styles[syntax.name],
-                            false
-                        )
+            try {
+                for (line in lines) {
+                    codeSyntaxes.values.forEach { syntax ->
+                        val matcher = syntax.regex.toPattern().matcher(line)
+                        while (matcher.find()) {
+
+                            doc.setCharacterAttributes(
+                                startOffset + matcher.start(),
+                                matcher.end() - matcher.start(),
+                                styles[syntax.name],
+                                false
+                            )
+                        }
                     }
+                    startOffset += line.length + 1
                 }
-                startOffset += line.length + 1
+
+            } catch (e: Exception) {
+                println("error $e.message")
             }
             doc.addDocumentListener(documentListener)
         }

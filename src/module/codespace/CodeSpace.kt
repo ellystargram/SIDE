@@ -14,8 +14,9 @@ import javax.swing.event.DocumentListener
 import javax.swing.text.StyledDocument
 
 class CodeSpace(private val settings: Settings, private val pallet: Pallet) : JPanel() {
-    private var codeMode = settings.getSettingOfString("codeSpace.mode")
-    private val codeEditor: JTextPane = JTextPane()
+        private var codeMode = settings.getSettingOfString("codeSpace.mode")
+//    private var codeMode = "text"
+    val codeEditor: JTextPane = JTextPane()
     private val codeArea: StyledDocument = codeEditor.styledDocument
     private val codeHorizontalScrollPane: JScrollPane = JScrollPane(codeEditor)
     private val codeVerticalScrollPane: JScrollPane = JScrollPane(codeHorizontalScrollPane)
@@ -83,8 +84,12 @@ class CodeSpace(private val settings: Settings, private val pallet: Pallet) : JP
         }
     }
 
-    private fun codeModeChange(codeMode: String) {
+    fun codeModeChange(codeMode: String) {
         // change the code mode
+        this.codeMode = codeMode
+        if (codeMode == "text") {
+            return
+        }
         val codeModeJsonLines = javaClass.getResource("modes/$codeMode.json")?.readText() ?: return
         val codeModeJsonObject = JSONParser().parse(codeModeJsonLines) as JSONObject
         codeSyntaxChecker.loadCodeSyntaxes(codeModeJsonObject)

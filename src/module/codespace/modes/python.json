@@ -3,18 +3,42 @@
     {
       "name": "comment",
       "priority": 0,
-      "regex": "^#.*$",
+      "regex": "^[\t ]*#.*$",
       "pallet": "comment"
     },
     {
       "name": "variable",
-      "regex": "^\t*([a-zA-Z_][a-zA-Z0-9_]*)(, *([a-zA-Z_][a-zA-Z0-9_]*))*",
+      "regex": "^[\t ]*([a-zA-Z_][a-zA-Z0-9_]*)(, *([a-zA-Z_][a-zA-Z0-9_]*))*",
       "pallet": "variable"
     },
     {
-      "name": "constance",
-      "priority": 2,
-      "regex": "\\d",
+      "name": "constanceDec",
+      "regex": "\\d+",
+      "pallet": "constance"
+    },
+    {
+      "name": "constanceHex",
+      "regex": "0x[0-9a-fA-F]+",
+      "pallet": "constance"
+    },
+    {
+      "name": "constanceBin",
+      "regex": "0b[01]+",
+      "pallet": "constance"
+    },
+    {
+      "name": "constanceOct",
+      "regex": "0o[0-7]+",
+      "pallet": "constance"
+    },
+    {
+      "name": "constanceFloat",
+      "regex": "\\d+\\.\\d+",
+      "pallet": "constance"
+    },
+    {
+      "name": "constanceBool",
+      "regex": "True|False",
       "pallet": "constance"
     },
     {
@@ -27,12 +51,132 @@
   "keyword": [
     {
       "name": "import",
-      "regex":"^\t*import",
+      "regex": "^[\t ]*import",
       "pallet": "keyword"
     },
     {
       "name": "def",
-      "regex": "^\t*def",
+      "regex": "^[\t ]*def",
+      "pallet": "keyword"
+    },
+    {
+      "name": "class",
+      "regex": "^[\t ]*class",
+      "pallet": "keyword"
+    },
+    {
+      "name": "if",
+      "regex": "^[\t ]*if",
+      "pallet": "keyword"
+    },
+    {
+      "name": "elif",
+      "regex": "^[\t ]*elif",
+      "pallet": "keyword"
+    },
+    {
+      "name": "else",
+      "regex": "^[\t ]*else",
+      "pallet": "keyword"
+    },
+    {
+      "name": "for",
+      "regex": "^[\t ]*for",
+      "pallet": "keyword"
+    },
+    {
+      "name": "while",
+      "regex": "^[\t ]*while",
+      "pallet": "keyword"
+    },
+    {
+      "name": "return",
+      "regex": "^[\t ]*return",
+      "pallet": "keyword"
+    },
+    {
+      "name": "break",
+      "regex": "^[\t ]*break",
+      "pallet": "keyword"
+    },
+    {
+      "name": "continue",
+      "regex": "^[\t ]*continue",
+      "pallet": "keyword"
+    },
+    {
+      "name": "pass",
+      "regex": "^[\t ]*pass",
+      "pallet": "keyword"
+    },
+    {
+      "name": "global",
+      "regex": "^[\t ]*global",
+      "pallet": "keyword"
+    },
+    {
+      "name": "nonlocal",
+      "regex": "^[\t ]*nonlocal",
+      "pallet": "keyword"
+    },
+    {
+      "name": "lambda",
+      "regex": "^[\t ]*lambda",
+      "pallet": "keyword"
+    },
+    {
+      "name": "and",
+      "regex": " and ",
+      "pallet": "keyword"
+    },
+    {
+      "name": "or",
+      "regex": " or ",
+      "pallet": "keyword"
+    },
+    {
+      "name": "not",
+      "regex": " not ",
+      "pallet": "keyword"
+    },
+    {
+      "name": "in",
+      "regex": " in ",
+      "pallet": "keyword"
+    },
+    {
+      "name": "is",
+      "regex": " is ",
+      "pallet": "keyword"
+    },
+    {
+      "name": "True",
+      "regex": " True ",
+      "pallet": "keyword"
+    },
+    {
+      "name": "False",
+      "regex": " False ",
+      "pallet": "keyword"
+    },
+    {
+      "name": "None",
+      "regex": " None ",
+      "pallet": "keyword"
+    },
+    {
+      "name": "as",
+      "regex": " as ",
+      "pallet": "keyword"
+    },
+    {
+      "name": "from",
+      "regex": " from ",
+      "pallet": "keyword"
+    },
+    {
+      "name": "with",
+      "regex": " with ",
       "pallet": "keyword"
     }
   ]

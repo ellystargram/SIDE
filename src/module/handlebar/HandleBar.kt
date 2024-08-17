@@ -16,7 +16,7 @@ import kotlin.system.exitProcess
 
 class HandleBar(private val settings: Settings, private val pallet: Pallet) : JPanel() {
     private var initialClick: Point? = null
-    private val title: JLabel = JLabel(settings.getSettingOfString("handleBar.title.default"))
+    val title: JLabel = JLabel(settings.getSettingOfString("handleBar.title.default"))
     private val exitButton: JButton = JButton(settings.getSettingOfString("handleBar.exitButton.text"))
 
     init {

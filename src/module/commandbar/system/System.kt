@@ -1,10 +1,15 @@
 package module.commandbar.system
 
+import module.SIDE
+import module.commandbar.exceptions.DebugException
+import module.commandbar.exceptions.FileException
+import module.commandbar.exceptions.InvalidCommandException
 import module.settings.Settings
 import org.json.simple.JSONArray
 import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
 import java.io.File
+import javax.swing.JFrame
 import kotlin.system.exitProcess
 
 
@@ -78,19 +83,50 @@ class System(val settings: Settings) {
         //원리... 가 뭐야 ㅇㅋ? 삭제를 보류했다가 한번에 삭제? 그렇군요ㅇㅇ 두번쨰 알고리즘이 바로 삭제였는데 그러니까 인덱스 문제나니까..
     }
 
-    fun performSystemCommand(command: String): Boolean {
+    fun performSystemCommand(command: String, mainSide:SIDE): Boolean {
         val commandOperand = command.split(" ")[0]
         if (customCommands.contains(command)) {
             //TODO execute command(s) by alias action
             return true
         } else if (commandOperand == "exit" || commands["exit"]?.contains(commandOperand) == true) {
             exitProcess(0)
-            return true
+//            return true
         } else if (commandOperand == "save" || commands["save"]?.contains(commandOperand) == true) {
             //TODO save file
+            val commandSplit = command.split(" ")
+            if (commandSplit.size != 1) {
+                throw InvalidCommandException(command, "Invalid command argument. Usage: save")
+            }
+            if (mainSide.projectName == null) {
+                throw FileException(command, "File is not selected. Please save as")
+            }
+            val file = File(mainSide.projectName!!)
+            if (!file.exists()) {
+                throw FileException(command, "File not found")
+            }
+            file.writeText(mainSide.codeSpace.codeEditor.text)
             return true
         } else if (commandOperand == "save_as" || commands["save_as"]?.contains(commandOperand) == true) {
-            //TODO save file as different name
+            val commandSplit = command.split(" ")
+            if (commandSplit.size != 2) {
+                throw InvalidCommandException(command, "Invalid command argument. Usage: save_as [file path]")
+            }
+            val file = File(commandSplit[1])
+            file.writeText(mainSide.codeSpace.codeEditor.text)
+            updateCurrentProjectName(mainSide, file.name, commandSplit[1])
+            return true
+        } else if(commandOperand == "load" || commands["load"]?.contains(commandOperand) == true){
+            val commandSplit = command.split(" ")
+            if(commandSplit.size != 2){
+                throw InvalidCommandException(command, "Invalid command argument. Usage: load [file path]")
+            }
+            val file = File(commandSplit[1])
+            if(!file.exists()){
+                throw InvalidCommandException(command, "File not found")
+            }
+            val fileContent = file.readText()
+            mainSide.codeSpace.codeEditor.text = fileContent
+            updateCurrentProjectName(mainSide, file.name, commandSplit[1])
             return true
         }
         // alias command가 "exit asdf"면 어떻게되 이건 띄어쓰기까지 하나의 문자야 그렇지 명령어를 복합적으로 쓰기위해
@@ -100,6 +136,20 @@ class System(val settings: Settings) {
         return false
     }
 
+    private fun updateCurrentProjectName(mainSide: SIDE, projectName: String, name: String) {
+        mainSide.projectName = projectName
+        mainSide.handleBar.title.text = projectName
+        val fileExtender = name.split(".")[name.split(".").size - 1]
+        println("fileExtender: $fileExtender")
+        mainSide.codeSpace.codeModeChange(getLanguageName(fileExtender))
+    }
+
+    private fun getLanguageName(extender: String): String {
+        if (extender == "py") return "python"
+        if (extender == "kt") return "kotlin"
+        if (extender == "java") return "java"
+        return ""
+    }
 }
 
 //제안 checkSystemCommand 그래? 사실 근데 바로 적용도 시킬라 그랬는데? 그나저나 이것도 고민이 있어.

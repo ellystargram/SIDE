@@ -10,10 +10,10 @@ import javax.swing.JFrame
 class SIDE : JFrame() {
     private val settings: Settings = Settings()
     private val pallet = Pallet(settings)
-    private val commandBarFiled = CommandBar(settings, pallet)
-    private val handleBar = HandleBar(settings, pallet)
-    private val codeSpace = CodeSpace(settings, pallet)
-    var projectName: String = settings.getSettingOfString("general.defaultProjectName")
+    val handleBar = HandleBar(settings, pallet)
+    val codeSpace = CodeSpace(settings, pallet)
+    var projectName: String? = null
+    private val commandBarFiled = CommandBar(settings, pallet, this)
 
     init {
         title = settings.getSettingOfString("version")

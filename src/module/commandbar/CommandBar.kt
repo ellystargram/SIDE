@@ -1,5 +1,9 @@
 package module.commandbar
 
+import module.SIDE
+import module.commandbar.exceptions.DebugException
+import module.commandbar.exceptions.FileException
+import module.commandbar.exceptions.InvalidCommandException
 import module.commandbar.system.System
 
 import module.pallet.Pallet
@@ -14,7 +18,7 @@ import java.awt.event.KeyEvent
 import java.time.format.DateTimeFormatter
 import javax.swing.*
 
-class CommandBar(val settings: Settings, private val pallet: Pallet) : JPanel() {
+class CommandBar(val settings: Settings, private val pallet: Pallet, private val mainSide:SIDE) : JPanel() {
     private val commandField = JTextField(settings.getSettingOfString("commandBar.prompt.text"))
     private val executeButton = JButton(settings.getSettingOfString("commandBar.executeButton.text"))
     private val enterPanel = JPanel()
@@ -97,13 +101,32 @@ class CommandBar(val settings: Settings, private val pallet: Pallet) : JPanel() 
     private fun executeButtonAction() {
         val command = commandField.text
         var success = false
+        var exceptioned = false
+        var exceptionDescription = ""
+        var exceptionCommand = ""
 
-        if (systemCommand.performSystemCommand(command)) success = true
+        try {
+            if (systemCommand.performSystemCommand(command, mainSide)) success = true
+        } catch (e:InvalidCommandException){
+            exceptioned = true
+            exceptionDescription = e.description
+            exceptionCommand = e.problemCommand
+        } catch (e:FileException){
+            exceptioned = true
+            exceptionDescription = e.description
+            exceptionCommand = e.problemCommand
+        } catch (e: Exception) {
+            e.printStackTrace()
+            exceptioned = true
+            exceptionDescription = e.message.toString()
+            exceptionCommand = command
+        }
 
         val time = DateTimeFormatter.ofPattern("HH:mm:ss").format(java.time.LocalDateTime.now())
 
         if (success) commandHistory.add("<$time>: $command")
-        else commandHistory.add("<$time>: `$command`Command not found")
+        else if (exceptioned) commandHistory.add("E <$time>: `$exceptionCommand` $exceptionDescription")
+        else commandHistory.add("E <$time>: `$command`Command not found")
 
         historyList.setListData(commandHistory.toTypedArray())
         SwingUtilities.invokeLater {
