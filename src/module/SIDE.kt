@@ -1,45 +1,54 @@
 package module
 
-import module.codespace.CodeSpace
-import module.commandbar.CommandBar
-import module.pallet.Pallet
-import module.settings.Settings
-import module.handlebar.HandleBar
-import javax.swing.JFrame
+import module.engine.exception.NoFileException
+import module.engine.json.JsonObject
+import java.io.File
 
-class SIDE : JFrame() {
-    private val settings: Settings = Settings()
-    private val pallet = Pallet(settings)
-    val handleBar = HandleBar(settings, pallet, this)
-    val codeSpace = CodeSpace(settings, pallet)
-    var projectName: String? = null
-    private val commandBarFiled = CommandBar(settings, pallet, this)
-    var codeRunningThread: Thread? = null
-
+class SIDE(var settingsJsonObject: JsonObject? = null) {
     init {
-        title = settings.getSettingOfString("version")
-        setLocationRelativeTo(null)
-        defaultCloseOperation = EXIT_ON_CLOSE
-        setSize(settings.getSettingOfInt("general.width"), settings.getSettingOfInt("general.height"))
-        if (settings.getSettingOfBoolean("general.isFullscreen")) {
-            isUndecorated = true
-            extendedState = MAXIMIZED_BOTH
+        if (settingsJsonObject != null) { // custom settings
+            println("<IDE is launching with custom settings>")
+            // check custom settings integrity
+            val defaultSettingsJsonObject = JsonObject(
+                javaClass.getResource("/resources/json/settings.json")?.readText()
+                    ?: throw NoFileException("No such file: settings.json")
+            )
+
+        } else { // default settings
+            println("<IDE is launching with default settings>")
+            settingsJsonObject = JsonObject(
+                javaClass.getResource("/resources/json/settings.json")?.readText()
+                    ?: throw NoFileException("No such file: settings.json")
+            )
         }
-        contentPane.background = pallet.getPallet("ide.background")
-        handleBar.addMovingListener(this)
-        add(commandBarFiled, "South")
-        add(handleBar, "North")
-        add(codeSpace, "Center")
 
-        isVisible = true
-
-//        pallet.getPallet("asdf")
-//        pallet.getPallet("asdf.asdf")
     }
 
-
+    private fun checkSettingsIntegrity(custom: JsonObject, default: JsonObject) {
+        // check custom settings integrity
+        // check if custom settings has all the keys that default settings has
+        // check if custom settings has all the values that default settings has
+        // check if custom settings has all the keys that default settings has
+        // check if custom settings has all the keys that default settings has
+    }
 }
 
 fun main() {
-    val side = SIDE()
+    var settingsJsonObject: JsonObject? = null
+    try {
+        val settingsJsonFile = File("settings.json")
+        settingsJsonObject = JsonObject(settingsJsonFile)
+    } catch (e: NoFileException) {
+        println("custom settings load failed")
+        println("Warning!: ${e.message}")
+    } catch (e: Exception) {
+        println("ERROR!: ${e.message}")
+    }
+
+
+    try {
+        val side = SIDE(settingsJsonObject)
+    } catch (e: Exception) {
+        println("ERROR!: ${e.message}")
+    }
 }
