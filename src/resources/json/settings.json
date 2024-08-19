@@ -1,3 +1,9 @@
 {
-
+  "ideVersion": "Venus",
+  "ideDefaultProjectName": "SIDE: Venus",
+  "ideWindow": {
+    "width": 800,
+    "height": 600,
+    "title": "SIDE: Venus"
+  }
 }
