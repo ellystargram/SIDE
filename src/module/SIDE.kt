@@ -80,3 +80,16 @@ fun main() {
         e.printStackTrace()
     }
 }
+
+
+/*
+if (getSettingOfString("$settingAddress.$fontNameKey").startsWith("/")) {
+            //custom font
+            val ttfFile = javaClass.getResource(getSettingOfString("$settingAddress.$fontNameKey"))!!.openStream()
+            val deriveFont = Font.createFont(Font.TRUETYPE_FONT, ttfFile)
+                .deriveFont(getSettingOfInt("$settingAddress.$fontSizeKey").toFloat())
+            val ge: GraphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment()
+            ge.registerFont(deriveFont)
+            return deriveFont
+        }
+ */

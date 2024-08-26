@@ -5,5 +5,16 @@
     "width": 800,
     "height": 600,
     "title": "SIDE: Venus"
+  },
+  "pallet": {
+    "theme": "dark",
+    "dark": {
+      "name": "DarkMode",
+      "path": "/resources/json/pallet/dark.json"
+    },
+    "custom": {
+        "name": "CustomMode",
+        "path": ""
+    }
   }
 }
