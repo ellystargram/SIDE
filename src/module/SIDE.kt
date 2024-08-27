@@ -1,14 +1,19 @@
 package module
 
 import module.display.Window
+import module.display.filebar.FileBar
 import module.engine.exception.NoFileException
 import module.engine.json.JsonObject
+import module.engine.pallet.Pallet
 import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
 import java.io.File
 
 class SIDE(var settingsJsonObject: JsonObject? = null) {
+    var pallet: Pallet? = null
     var ideWindow: Window? = null
+    var fileBar: FileBar? = null
+
     init {
         val defaultSettingsJsonRaw = javaClass.getResource("/resources/json/settings.json")?.readText()
             ?: throw NoFileException("No such file: settings.json")
@@ -21,13 +26,30 @@ class SIDE(var settingsJsonObject: JsonObject? = null) {
             println("<IDE is launching with default settings>")
             settingsJsonObject = defaultSettingsJsonObject
         }
-
+        palletInit()
         ideWindowInit()
+        fileBarInit()
+
+        ideWindow!!.repaint()
+        ideWindow!!.revalidate()
     }
 
-    private fun ideWindowInit(){
-        ideWindow = Window(settingsJsonObject!!)
+    private fun palletInit() {
+        pallet = Pallet(this)
     }
+
+    private fun ideWindowInit() {
+//        ideWindow = Window(settingsJsonObject!!)
+        ideWindow = Window(this)
+    }
+
+    private fun fileBarInit() {
+        if (settingsJsonObject!!.getPrimitiveAsBoolean("ideWindow.fileBar.enabled")) {
+            fileBar = FileBar(this)
+        }
+//        fileBar = FileBar(this)
+    }
+
 
     private fun checkSettingsIntegrityAndFix(custom: JsonObject, default: JsonObject) {
         // check custom settings integrity
@@ -74,7 +96,7 @@ fun main() {
 
 
     try {
-        val side = SIDE(settingsJsonObject)
+        SIDE(settingsJsonObject)
     } catch (e: Exception) {
         println("ERROR!: ${e.message}")
         e.printStackTrace()

@@ -4,13 +4,23 @@
   "ideWindow": {
     "width": 800,
     "height": 600,
-    "title": "SIDE: Venus"
+    "title": "SIDE: Venus",
+    "fileBar": {
+      "enabled": true,
+      "preferredWidth": 200,
+      "preferredHeight": 200,
+      "location": "West"
+    }
   },
   "pallet": {
     "theme": "dark",
     "dark": {
       "name": "DarkMode",
       "path": "/resources/json/pallet/dark.json"
+    },
+    "light": {
+      "name": "LightMode",
+      "path": "/resources/json/pallet/light.json"
     },
     "custom": {
         "name": "CustomMode",
