@@ -7,9 +7,43 @@
     "title": "SIDE: Venus",
     "fileBar": {
       "enabled": true,
+      "border": {
+        "enabled": true,
+        "width": 1
+      },
       "preferredWidth": 200,
       "preferredHeight": 200,
       "location": "West"
+    },
+    "terminalBar": {
+      "enabled": true,
+      "border": {
+        "enabled": true,
+        "width": 1
+      },
+      "preferredWidth": 200,
+      "preferredHeight": 200,
+      "location": "South",
+      "tab":{
+        "log": {
+          "font": {
+            "name": "JetBrains Mono",
+            "size": 12
+          }
+        },
+        "prompt": {
+          "font": {
+            "name": "JetBrains Mono",
+            "size": 12
+          }
+        },
+        "executeButton": {
+          "font": {
+            "name": "JetBrains Mono",
+            "size": 12
+          }
+        }
+      }
     }
   },
   "pallet": {
@@ -23,8 +57,8 @@
       "path": "/resources/json/pallet/light.json"
     },
     "custom": {
-        "name": "CustomMode",
-        "path": ""
+      "name": "CustomMode",
+      "path": ""
     }
   }
 }

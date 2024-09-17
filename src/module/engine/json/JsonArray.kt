@@ -20,7 +20,6 @@ class JsonArray {
 //            javaClass.getResource(jsonAddress)?.readText() ?: throw NoFileException("No such file: $jsonAddress")
         var jsonRaw =
             if (jsonFile.exists()) jsonFile.readText() else throw NoFileException("No such file: $jsonAddress")
-
         if (!jsonRaw.startsWith("[") || !jsonRaw.endsWith("]")) {
             jsonFile.writeText("[]")
             jsonRaw = "[]"

@@ -1,8 +1,8 @@
 package module
 
 import module.display.Window
-import module.display.filebar.FileBar
 import module.engine.exception.NoFileException
+import module.engine.font.FontManager
 import module.engine.json.JsonObject
 import module.engine.pallet.Pallet
 import org.json.simple.JSONObject
@@ -12,7 +12,7 @@ import java.io.File
 class SIDE(var settingsJsonObject: JsonObject? = null) {
     var pallet: Pallet? = null
     var ideWindow: Window? = null
-    var fileBar: FileBar? = null
+    private val FontManager = FontManager()
 
     init {
         val defaultSettingsJsonRaw = javaClass.getResource("/resources/json/settings.json")?.readText()
@@ -28,7 +28,6 @@ class SIDE(var settingsJsonObject: JsonObject? = null) {
         }
         palletInit()
         ideWindowInit()
-        fileBarInit()
 
         ideWindow!!.repaint()
         ideWindow!!.revalidate()
@@ -41,13 +40,6 @@ class SIDE(var settingsJsonObject: JsonObject? = null) {
     private fun ideWindowInit() {
 //        ideWindow = Window(settingsJsonObject!!)
         ideWindow = Window(this)
-    }
-
-    private fun fileBarInit() {
-        if (settingsJsonObject!!.getPrimitiveAsBoolean("ideWindow.fileBar.enabled")) {
-            fileBar = FileBar(this)
-        }
-//        fileBar = FileBar(this)
     }
 
 

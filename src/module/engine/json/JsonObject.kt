@@ -13,8 +13,7 @@ class JsonObject {
         var jsonFile: File? = null
         if (jsonAddress.startsWith("/")) {
             jsonFile = File(javaClass.getResource(jsonAddress)!!.path)
-        }
-        else {
+        } else {
             jsonFile = File(jsonAddress)
         }
         var jsonRaw =
@@ -90,11 +89,11 @@ class JsonObject {
         return formatJsonString(heavyJsonObject.toJSONString())
     }
 
-    private fun formatJsonString(jsonString: String, indentFactor: Int = 4): String{
+    private fun formatJsonString(jsonString: String, indentFactor: Int = 4): String {
         val indent = " ".repeat(indentFactor)
         val formattedJson = StringBuilder()
 
-        var level=0
+        var level = 0
         var inQuote = false
 
         for (char in jsonString) {

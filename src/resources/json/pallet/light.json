@@ -1,0 +1,17 @@
+{
+  "error": "#ff0000",
+  "warning": "#ffcc00",
+  "ideWindow": {
+    "background": "#ebd9d8",
+    "foreground": "#0d0808",
+    "border": "#2e2e2e",
+    "text": "#ffffff",
+    "fileBar": {
+      "background": "#2e2e2e",
+      "foreground": "#ffffff",
+      "border": "#3e3e3e",
+      "text": "#ffffff",
+      "hover": "#3e3e3e"
+    }
+  }
+}
