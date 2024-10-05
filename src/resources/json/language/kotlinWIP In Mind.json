@@ -1,0 +1,17 @@
+[
+  {
+    "name": "comment",
+    "regex": "(\\/\\/.*)\n",
+    "captureGroup": 1
+  },
+  {
+    "name": "classKeyword",
+    "regex": " (class)\\s",
+    "captureGroup": 1
+  },
+  {
+    "name": "className",
+    "regex": "(class)[\\s\n]+([\\w\\d_-]+)",
+    "captureGroup": 2
+  }
+]

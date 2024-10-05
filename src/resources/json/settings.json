@@ -15,7 +15,7 @@
       "preferredHeight": 200,
       "location": "West"
     },
-    "terminalBar": {
+    "terminalTabPane": {
       "enabled": true,
       "border": {
         "enabled": true,
@@ -24,6 +24,9 @@
       "preferredWidth": 200,
       "preferredHeight": 200,
       "location": "South",
+      "controller": {
+        "location": "North"
+      },
       "tab":{
         "log": {
           "font": {
@@ -44,6 +47,14 @@
           }
         }
       }
+    },
+    "editorPane": {
+      "enabled": true,
+      "location": "Center",
+      "greetingMessage": "Simple IDE",
+      "greetingTabTitle": "Welcome",
+      "newFileTitle": "<new file>",
+      "unsavedFileTitlePrefix": "* "
     }
   },
   "pallet": {

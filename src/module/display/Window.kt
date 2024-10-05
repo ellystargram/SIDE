@@ -1,14 +1,17 @@
 package module.display
 
 import module.SIDE
+import module.display.editor.EditorPane
 import module.display.filebar.FileBar
-import module.display.terminalbar.TerminalBar
+import module.display.terminalPane.TerminalTabPane
 import javax.swing.JFrame
 
 class Window(private val side: SIDE) : JFrame() {
     private val settings = side.settingsJsonObject!!
     private var fileBar: FileBar? = null
-    var terminalBar: TerminalBar? = null
+//    var terminalBar: TerminalBar? = null
+    var terminalTabPane: TerminalTabPane? = null
+    var editorPane: EditorPane? =null
 
     init {
         title = settings.getPrimitiveAsString("ideWindow.title")
@@ -20,6 +23,7 @@ class Window(private val side: SIDE) : JFrame() {
 
         addFileBar()
         addTerminalBar()
+        addEditorPane()
 
         palletApply()
     }
@@ -38,9 +42,18 @@ class Window(private val side: SIDE) : JFrame() {
     }
 
     private fun addTerminalBar() {
-        if (settings.getPrimitiveAsBoolean("ideWindow.terminalBar.enabled")) {
-            terminalBar = TerminalBar(side)
-            add(terminalBar!!, settings.getPrimitiveAsString("ideWindow.terminalBar.location"))
+        if (settings.getPrimitiveAsBoolean("ideWindow.terminalTabPane.enabled")) {
+//            terminalBar = TerminalBar(side)
+            terminalTabPane = TerminalTabPane(side)
+//            add(terminalBar!!, settings.getPrimitiveAsString("ideWindow.terminalBar.location"))
+            add(terminalTabPane!!, settings.getPrimitiveAsString("ideWindow.terminalTabPane.location"))
+        }//ok display 패키지에는 ui적인거, engine 패키지에 알고리듬 같은거
+    }
+
+    private fun addEditorPane() {
+        if (settings.getPrimitiveAsBoolean("ideWindow.editorPane.enabled")) {
+            editorPane = EditorPane(side)
+            add(editorPane!!, settings.getPrimitiveAsString("ideWindow.editorPane.location"))
         }
     }
 }

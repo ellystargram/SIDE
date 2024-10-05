@@ -13,7 +13,7 @@
       "text": "#ffffff",
       "hover": "#3e3e3e"
     },
-    "terminalBar": {
+    "terminalTabPane": {
       "background": "#2e2e2e",
       "foreground": "#ffffff",
       "border": "#3e3e3e",
@@ -22,16 +22,22 @@
       "controller": {
         "background": "#3e3e3e",
         "foreground": "#ffffff",
-        "border": "#4e4e4e",
-        "text": "#ffffff",
-        "hover": "#4e4e4e"
+        "addButton": {
+          "background": "#2e2e2e",
+          "foreground": "#ffffff"
+        },
+        "removeButton": {
+          "background": "#2e2e2e",
+          "foreground": "#ffffff"
+        }
+      },
+      "tabPanel": {
+        "background": "#3e3e3e",
+        "foreground": "#ffffff"
       },
       "tab": {
         "background": "#3e3e3e",
         "foreground": "#ffffff",
-        "border": "#4e4e4e",
-        "text": "#ffffff",
-        "hover": "#4e4e4e",
         "log": {
           "background": "#1e1e1e",
           "foreground": "#ffffff",
@@ -45,6 +51,10 @@
           "border": "#5e5e5e",
           "text": "#ffffff",
           "hover": "#5e5e5e"
+        },
+        "executeButton": {
+          "background": "#4e4e4e",
+          "foreground": "#ffffff"
         }
       }
     }
