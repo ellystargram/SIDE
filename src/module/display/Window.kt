@@ -3,6 +3,7 @@ package module.display
 import module.SIDE
 import module.display.editor.EditorPane
 import module.display.filebar.FileBar
+import module.display.menuPane.MenuPane
 import module.display.terminalPane.TerminalTabPane
 import javax.swing.JFrame
 
@@ -12,6 +13,7 @@ class Window(private val side: SIDE) : JFrame() {
 //    var terminalBar: TerminalBar? = null
     var terminalTabPane: TerminalTabPane? = null
     var editorPane: EditorPane? =null
+    val menuPane = MenuPane(side)
 
     init {
         title = settings.getPrimitiveAsString("ideWindow.title")
@@ -20,6 +22,8 @@ class Window(private val side: SIDE) : JFrame() {
         setSize(width, height)
         defaultCloseOperation = EXIT_ON_CLOSE
         isVisible = true
+
+        jMenuBar = menuPane
 
         addFileBar()
         addTerminalBar()

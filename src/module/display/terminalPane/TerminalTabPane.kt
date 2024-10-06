@@ -1,6 +1,7 @@
 package module.display.terminalPane
 
 import module.SIDE
+import module.display.menuPane.MenuPane
 import module.engine.terminal.SIDETerminal
 import module.engine.terminal.SystemTerminal
 import module.engine.terminal.Terminal
@@ -11,7 +12,7 @@ import javax.swing.*
 
 class TerminalTabPane(private val side: SIDE) : JPanel() {
     private val settings = side.settingsJsonObject!!
-    private val tabController: TabController = TabController(side)
+    val tabMenuPane = MenuPane(side)
     private val tabPanel: TabPanel = TabPanel(side)
 
     init {
@@ -21,7 +22,26 @@ class TerminalTabPane(private val side: SIDE) : JPanel() {
 
         layout = BorderLayout()
         val tabControllerLocation = settings.getPrimitiveAsString("ideWindow.terminalTabPane.controller.location")
-        add(tabController, tabControllerLocation)
+        add(tabMenuPane, tabControllerLocation)
+
+        val tabMenu = MenuPane.Menu(side, "Tab")
+        val closeTabMenuItem = MenuPane.Menu.MenuItem(side, "close Tab")
+        closeTabMenuItem.addActionListener {
+            tabPanel.removeTerminalTab()
+        }
+        tabMenu.add(closeTabMenuItem)
+        tabMenuPane.add(tabMenu)
+
+        tabMenuPane.add(MenuPane.Menu(side, "IDE"))
+
+        val systemMenu = MenuPane.Menu(side, "System")
+        val addSystemTerminalMenuItem = MenuPane.Menu.MenuItem(side, "open System Terminal")
+        addSystemTerminalMenuItem.addActionListener {
+            tabPanel.addSystemTerminalTab("System Terminal")
+        }
+        systemMenu.add(addSystemTerminalMenuItem)
+        tabMenuPane.add(systemMenu)
+
         add(tabPanel, BorderLayout.CENTER)
 
         val ideTerminalTab = Tab(side, "SIDE Terminal")
@@ -32,39 +52,12 @@ class TerminalTabPane(private val side: SIDE) : JPanel() {
 
         tabPanel.addTab(ideTerminalTab.tabName, ideTerminalTab)
 
-        tabController.addSystemTerminalButton.addActionListener {
-            tabPanel.addSystemTerminalTab("System Terminal")
-        }
-        tabController.removeSystemTerminalButton.addActionListener {
-            tabPanel.removeTerminalTab()
-        }
-
         applyPallet()
     }
 
     private fun applyPallet() {
-        tabController.applyPallet()
+//        tabController.applyPallet()
         tabPanel.applyPallet()
-    }
-
-    inner class TabController(private val side: SIDE) : JPanel() {
-        val addSystemTerminalButton = JButton("+")
-        val removeSystemTerminalButton = JButton("-")
-
-        init {
-            add(addSystemTerminalButton, BorderLayout.WEST)
-            add(removeSystemTerminalButton, BorderLayout.EAST)
-        }
-
-        fun applyPallet() {
-            val pallet = side.pallet!!
-            background = pallet.getPallet("ideWindow.terminalTabPane.controller.background")
-            foreground = pallet.getPallet("ideWindow.terminalTabPane.controller.foreground")
-            addSystemTerminalButton.background = pallet.getPallet("ideWindow.terminalTabPane.controller.addButton.background")
-            addSystemTerminalButton.foreground = pallet.getPallet("ideWindow.terminalTabPane.controller.addButton.foreground")
-            removeSystemTerminalButton.background = pallet.getPallet("ideWindow.terminalTabPane.controller.removeButton.background")
-            removeSystemTerminalButton.foreground = pallet.getPallet("ideWindow.terminalTabPane.controller.removeButton.foreground")
-        }
     }
 
     inner class TabPanel(private val side: SIDE) : JTabbedPane() {
